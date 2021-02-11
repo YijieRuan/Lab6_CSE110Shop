@@ -1,8 +1,8 @@
 // Script.js
-let myLocalStorage = window.localStorage;
-var productList = document.getElementById('product-list');
 
 window.addEventListener('DOMContentLoaded', () => {
+  let myLocalStorage = window.localStorage;
+  var productList = document.getElementById('product-list');
   if (myLocalStorage.getItem('products') == null) {
     fetch('https://fakestoreapi.com/products')
       .then(response => response.json())
