@@ -45,7 +45,7 @@ class ProductItem extends HTMLElement {
     //set the button
     var button = li.appendChild(document.createElement('button'));
     button.setAttribute('onclick',"alert('Added to Cart!')");
-    if(c.indexOf(product['id']) == -1){
+    if(c.includes(product['id'])){
       button.textContent = 'Remove from Cart';
       button.setAttribute('onclick', "alert('Removed from Cart!')");
     }
