@@ -1,44 +1,22 @@
 // Script.js
+let myLocalStorage = window.localStorage;
+var productList = document.getElementById('product-list');
+
 window.addEventListener('DOMContentLoaded', () => {
-  // TODO
-  var myLocalStorage = window.localStorage;
-  var cart = [];
-  myLocalStorage.setItem('cart', JSON.stringify(cart));
-  if(myLocalStorage.getItem('products')){
-    var storage = JSON.parse(myLocalStorage.getItem('products'));
-    storage.forEach(element => {
-      //product-item initialize
-      var pItem = document.createElement('product-item');
-      pItem.setAttribute('img', element.image);
-      pItem.setAttribute('price','$'+element.price);
-      pItem.setAttribute('dataId', element.id);
-      //console.log(element.id);
-      pItem.setAttribute('alt', element.title);
-      // pItem.setAttribute('description', element.description);
-      pItem.setAttribute('title', element.title);
-      // pItem.setAttribute('category', element.category);
-      document.getElementById('product-list').appendChild(pItem);
-    });
-  }
-  else{
+  if (myLocalStorage.getItem('products') == null) {
     fetch('https://fakestoreapi.com/products')
       .then(response => response.json())
-      .then(data =>{
-        myLocalStorage.setItem('products', JSON.stringify(data));
-        var storage = JSON.parse(myLocalStorage.getItem('products'));
-        storage.forEach(element => {
-          //product-item initialize
-          var pItem = document.createElement('product-item');
-          pItem.setAttribute('img', element.image);
-          pItem.setAttribute('alt', element.title);
-          pItem.setAttribute('price','$' + element.price);
-          pItem.setAttribute('dataId', element.id);
-          // pItem.setAttribute('description', element.description);
-          pItem.setAttribute('title', element.title);
-          // pItem.setAttribute('category', element.category);
-          document.getElementById('product-list').appendChild(pItem);
-        });
-      });
+      .then(data => myLocalStorage.setItem('products',JSON.stringify(data)));
+    let storage = JSON.parse(myLocalStorage.getItem('products'));
+    for (let i = 0; i < storage.length; i++) {
+      productList.appendChild(new ProductItem(storage[i]));
+    } 
   }
-  
+  else{
+    let storage = JSON.parse(myLocalStorage.getItem('products'));
+    for (let i = 0; i < storage.length; i++) {
+      productList.appendChild(new ProductItem(storage[i]));
+    } 
+  }
+   
 });

@@ -2,8 +2,16 @@
 
 class ProductItem extends HTMLElement {
   // TODO
-  constructor(){
+  
+  constructor(product){
     super();
+    var myLocalStorage = window.localStorage;
+    //define count of the item in cart
+    var count = document.getElementById('cart-count');
+    var c = JSON.parse(myLocalStorage.getItem('cart'));
+    count.textContent = c.length;
+    // var cart = [];
+    // myLocalStorage.setItem('cart', JSON.stringify(cart));
     let shadow = this.attachShadow({mode: 'open'});
 
     //create li
@@ -12,75 +20,88 @@ class ProductItem extends HTMLElement {
 
     //set img
     var img = document.createElement('img');
-    var image = li.appendChild(img);
-    image.setAttribute('width',200);
+    img.setAttribute('src',product['image']);
+    img.setAttribute('alt',product['title']);
+    img.setAttribute('width',200);
+    li.appendChild(img);
 
     //set title of the product
     var Title = document.createElement('p');
     var title = li.appendChild(Title);
     title.setAttribute('class','title');
+    title.textContent = product['title'];
 
     //set price of the product
     var pri = document.createElement('p');
     var price = li.appendChild(pri);
     price.setAttribute('class','price');
+    price.textContent = '$' + product['price'];
 
     //set the button
     var button = li.appendChild(document.createElement('button'));
     button.setAttribute('onclick',"alert('Added to Cart!')");
-    button.addEventListener('click', evt=>{
-      //define targeted event
-      var targetEvent = evt.target;
-
-      //define count of the item in cart
-      var count = document.getElementById('cart-count').textContent;
+    if(c.includes(product['id'])){
+      button.textContent = 'Remove from Cart';
+      button.setAttribute('onclick', "alert('Removed from Cart!')");
+    }
+    else{
+      button.textContent = 'Add to Cart';
+      button.setAttribute('onclick', "alert('Added to Cart!')");
+    }
+    button.addEventListener('click', function(){
 
       //define the text on the button
-      var status = targetEvent.textContent;
+      var status = this.textContent;
       //console.log(status);
-      let myLocalStorage = window.localStorage;
+      //let myLocalStorage = window.localStorage;
       //change the status, onclick, add or delete item, change count
       if (status === 'Add to Cart'){
-        targetEvent.textContent = 'Remove from Cart';
-        document.getElementById('cart-count').textContent = parseInt(count) + 1;
-        targetEvent.setAttribute('onclick', "alert('Removed from Cart!')");
-        //set cart into an array
-        var c = JSON.parse(myLocalStorage.getItem('cart'));
-        //console.log(this.getAttribute('dataId'));
-        c.push(this.getAttribute('dataId'));
-        //console.log(c);
-        //define cart as this array
-        myLocalStorage.setItem('cart', JSON.stringify(c));
-      }
-      else{
-        targetEvent.textContent = 'Add to Cart';
-        if(count > 0){
-          document.getElementById('cart-count').textContent = count -1;
+        this.textContent = 'Remove from Cart';
+        count.textContent ++;
+        button.setAttribute('onclick', "alert('Removed from Cart!')");
+        if(myLocalStorage.getItem('cart') == null){
+          var current = [product['id']];
+          myLocalStorage.setItem('cart', JSON.stringify(current));
+          //document.getElementById('cart-count').textContent = c.length;
         }
         else{
-          document.getElementById('cart-count').textContent = 0;
+          //set cart into an array
+          var current = JSON.parse(myLocalStorage.getItem('cart'));
+          //console.log(this.getAttribute('dataId'));
+          current.push(product['id']);
+          //console.log(c);
+          //define cart as this array
+          myLocalStorage.setItem('cart', JSON.stringify(current));
+         //document.getElementById('cart-count').textContent = c.length;
         }
-        targetEvent.setAttribute('onclick', "alert('Added to Cart!')");
+        
+      }
+      else{
+        this.textContent = 'Add to Cart';
+        count.textContent--;
+        button.setAttribute('onclick', "alert('Added to Cart!')");
         //set cart
-        var c = JSON.parse(myLocalStorage.getItem('cart'));
+        var current= JSON.parse(myLocalStorage.getItem('cart'));
         var x = 0;
-        c.forEach(element=> {
-          if(element === this.getAttribute('dataId').toString()){
-            c.splice(x,1);
+        current.forEach(element=> {
+          if(element === product['id']){
+            current.splice(x,1);
             //break;
             //console.log(c);
+            return
           }
           x = x+1;
         });
         //console.log(this.getAttribute('dataId'));
         //c.push(this.getAttribute('dataId'));
         //console.log(c);
-        myLocalStorage.setItem('cart', JSON.stringify(c));
+        myLocalStorage.setItem('cart', JSON.stringify(current));
+        //document.getElementById('cart-count').textContent = c.length;
         //console.log(c);
       }
 
     });
-    //button.textContent = 'Add to Cart';
+    li.appendChild(button);
     let style = document.createElement('style');
     style.textContent = '.price {' +
       'color: green;' +
@@ -144,27 +165,6 @@ class ProductItem extends HTMLElement {
       // li.appendChild(icon);
       // li.appendChild(info);
       
-  }
-  connectedCallback(){
-    const shadow = this.shadowRoot;
-    shadow.querySelector('img').setAttribute('src', this.getAttribute('img'));
-    shadow.querySelector('img').setAttribute('alt', this.getAttribute('alt'));
-    shadow.querySelector('.price').textContent = this.getAttribute('price');
-    shadow.querySelector('.title').textContent = this.getAttribute('title');
-    shadow.querySelector('.product').setAttribute('dataId',this.getAttribute('dataId'));
-    //console.log(this.getAttribute('dataId'));
-    shadow.querySelector('button').textContent = 'Add to Cart';
-  }
-  attributeChangedCallback(){
-    const shadow = this.shadowRoot;
-    var cart = JSON.parse(window.localStorage.getItem('cart'));
-    cart.forEach(element => {
-      if (element == this.getAttribute('dataId').toString()){
-        shadow.querySelector('button').textContent = 'Remove from Cart';
-        shadow.querySelector('button').setAttribute('onclick', "alert('Removed from Cart!')")
-      }
-    });
-
   }
 }
 
