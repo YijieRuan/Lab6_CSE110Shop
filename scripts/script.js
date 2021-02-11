@@ -6,7 +6,13 @@ window.addEventListener('DOMContentLoaded', () => {
   if (myLocalStorage.getItem('products') == null) {
     fetch('https://fakestoreapi.com/products')
       .then(response => response.json())
-      .then(data => myLocalStorage.setItem('products',JSON.stringify(data)));
+      .then(data =>{
+        myStorage.setItem('products',JSON.stringify(data));
+        let products = JSON.parse(myStorage.getItem('products'));
+        for (let i = 0; i < products.length; i++) {
+          productList.appendChild(new ProductItem(products[i]));
+        }
+      });
   }
   else{
     let storage = JSON.parse(myLocalStorage.getItem('products'));
