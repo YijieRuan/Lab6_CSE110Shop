@@ -7,6 +7,9 @@ class ProductItem extends HTMLElement {
     super();
     var myLocalStorage = window.localStorage;
     //define count of the item in cart
+    if (myLocalStorage.getItem('cart') == null) {
+      myLocalStorage.setItem('cart','[]');
+    }
     var count = document.getElementById('cart-count');
     if (myLocalStorage.getItem('cart')!= null) {
       count.textContent = JSON.parse(myLocalStorage.getItem('cart')).length;
