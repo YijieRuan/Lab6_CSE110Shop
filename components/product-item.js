@@ -9,7 +9,7 @@ class ProductItem extends HTMLElement {
     //define count of the item in cart
     var count = document.getElementById('cart-count');
     var c = JSON.parse(myLocalStorage.getItem('cart'));
-    count.textContent = c.length();
+    count.textContent = c.length;
     // var cart = [];
     // myLocalStorage.setItem('cart', JSON.stringify(cart));
     let shadow = this.attachShadow({mode: 'open'});
