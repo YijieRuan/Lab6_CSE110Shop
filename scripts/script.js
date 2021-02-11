@@ -1,5 +1,6 @@
 // Script.js
 
+
 window.addEventListener('DOMContentLoaded', () => {
   let myLocalStorage = window.localStorage;
   var productList = document.getElementById('product-list');
@@ -8,9 +9,9 @@ window.addEventListener('DOMContentLoaded', () => {
       .then(response => response.json())
       .then(data =>{
         myStorage.setItem('products',JSON.stringify(data));
-        let products = JSON.parse(myStorage.getItem('products'));
-        for (let i = 0; i < products.length; i++) {
-          productList.appendChild(new ProductItem(products[i]));
+        let storage = JSON.parse(myStorage.getItem('products'));
+        for (let i = 0; i < storage.length; i++) {
+          productList.appendChild(new ProductItem(storage[i]));
         }
       });
   }
