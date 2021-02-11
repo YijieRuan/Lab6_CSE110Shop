@@ -38,13 +38,13 @@ nav {
   justify-content: center;
   padding: 10px;
 }
-
+/*avoid error using absolute path*/
 #shop-icon {
-  content: url("/assets/shop-icon.png");
+  content: url("../assets/shop-icon.png");
 }
-
+/*avoid error using absolute path*/
 #cart-icon {
-  content: url("/assets/cart-icon.png");
+  content: url("../assets/cart-icon.png");
 }
 
 /* Custom Element CSS starts here */

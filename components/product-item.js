@@ -155,6 +155,17 @@ class ProductItem extends HTMLElement {
     //console.log(this.getAttribute('dataId'));
     shadow.querySelector('button').textContent = 'Add to Cart';
   }
+  attributeChangedCallback(){
+    const shadow = this.shadowRoot;
+    var cart = JSON.parse(window.localStorage.getItem('cart'));
+    cart.forEach(element => {
+      if (element == this.getAttribute('dataId').toString()){
+        shadow.querySelector('button').textContent = 'Remove from Cart';
+        shadow.querySelector('button').setAttribute('onclick', "alert('Removed from Cart!')")
+      }
+    });
+
+  }
 }
 
 customElements.define('product-item', ProductItem);
