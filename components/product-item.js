@@ -46,9 +46,9 @@ class ProductItem extends HTMLElement {
         targetEvent.setAttribute('onclick', "alert('Removed from Cart!')");
         //set cart into an array
         var c = JSON.parse(myLocalStorage.getItem('cart'));
-        console.log(this.getAttribute('dataId'));
+        //console.log(this.getAttribute('dataId'));
         c.push(this.getAttribute('dataId'));
-        console.log(c);
+        //console.log(c);
         //define cart as this array
         myLocalStorage.setItem('cart', JSON.stringify(c));
       }
@@ -72,11 +72,11 @@ class ProductItem extends HTMLElement {
           }
           x = x+1;
         });
-        console.log(this.getAttribute('dataId'));
+        //console.log(this.getAttribute('dataId'));
         //c.push(this.getAttribute('dataId'));
         //console.log(c);
         myLocalStorage.setItem('cart', JSON.stringify(c));
-        console.log(c);
+        //console.log(c);
       }
 
     });
