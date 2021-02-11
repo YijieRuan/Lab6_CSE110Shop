@@ -8,8 +8,10 @@ class ProductItem extends HTMLElement {
     var myLocalStorage = window.localStorage;
     //define count of the item in cart
     var count = document.getElementById('cart-count');
+    if (myLocalStorage.getItem('cart')!= null) {
+      count.textContent = JSON.parse(myLocalStorage.getItem('cart')).length;
+    }
     var c = JSON.parse(myLocalStorage.getItem('cart'));
-    count.textContent = c.length;
     // var cart = [];
     // myLocalStorage.setItem('cart', JSON.stringify(cart));
     let shadow = this.attachShadow({mode: 'open'});
@@ -26,16 +28,16 @@ class ProductItem extends HTMLElement {
     li.appendChild(img);
 
     //set title of the product
-    var Title = document.createElement('p');
-    var title = li.appendChild(Title);
+    var title = document.createElement('p');
     title.setAttribute('class','title');
     title.textContent = product['title'];
+    li.appendChild(title);
 
     //set price of the product
-    var pri = document.createElement('p');
-    var price = li.appendChild(pri);
+    var price = document.createElement('p');
     price.setAttribute('class','price');
     price.textContent = '$' + product['price'];
+    li.appendChild(price);
 
     //set the button
     var button = li.appendChild(document.createElement('button'));
